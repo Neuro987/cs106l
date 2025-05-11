@@ -13,8 +13,9 @@
 #include <set>
 #include <string>
 #include <unordered_set>
+#include <sstream>
 
-std::string kYourName = "STUDENT TODO"; // Don't forget to change this!
+std::string kYourName = "Fuuko Neuro"; // Don't forget to change this!
 
 /**
  * Takes in a file name and returns a set containing all of the applicant names as a set.
@@ -28,7 +29,18 @@ std::string kYourName = "STUDENT TODO"; // Don't forget to change this!
  * to also change the corresponding functions in `utils.h`.
  */
 std::set<std::string> get_applicants(std::string filename) {
-  // STUDENT TODO: Implement this function.
+  std::set<std::string> applicants;
+  std::ifstream ifs(filename);
+  if (ifs.is_open()) {
+    std::string name;
+    while (std::getline(ifs, name)) {
+      applicants.insert(name);
+    }
+  } else {
+    std::cerr << "Error: Could not open file " << filename << std::endl;
+  }
+  ifs.close();
+  return applicants;
 }
 
 /**
@@ -40,7 +52,32 @@ std::set<std::string> get_applicants(std::string filename) {
  * @return          A queue containing pointers to each matching name.
  */
 std::queue<const std::string*> find_matches(std::string name, std::set<std::string>& students) {
-  // STUDENT TODO: Implement this function.
+  std::queue<const std::string*> matched_students;
+
+  std::istringstream iss(name);
+  std::string first, last;
+  iss >> first >> last;
+  
+  if (first.empty() || last.empty()) {
+    std::cerr << "Error: Invalid name format: " << name << std::endl;
+    return matched_students;
+  }
+  
+  for (const auto& student_name : students) {
+    std::istringstream iss1(student_name);
+    std::string first1, last1;
+    iss1 >> first1 >> last1;
+    
+    if (first1.empty() || last1.empty()) {
+      std::cerr << "Error: Invalid name format: " << student_name << std::endl;
+      continue;
+    }
+    if (first1[0] == first[0] && last1[0] == last[0]) {
+      matched_students.push(&student_name);
+    }
+  }
+  
+  return matched_students;
 }
 
 /**
