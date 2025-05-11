@@ -14,8 +14,32 @@
 #include <string>
 #include <unordered_set>
 #include <sstream>
+#include <random>
 
 std::string kYourName = "Fuuko Neuro"; // Don't forget to change this!
+
+/**
+ * 生成一个随机布尔值（true或false）
+ * 
+ * @param seed 可选的字符串种子，用于初始化随机数生成器
+ * @return 随机的布尔值，有50%的概率返回true或false
+ */
+bool random_bool(const std::string& seed = "") {
+  static std::random_device rd;
+  
+  static std::mt19937 gen = [&seed]() {
+    if (!seed.empty()) {
+      std::size_t seed_hash = std::hash<std::string>{}(seed);
+      return std::mt19937(static_cast<unsigned int>(seed_hash));
+    } else {
+      return std::mt19937(rd());
+    }
+  }();
+  
+  static std::bernoulli_distribution dist(0.5);
+  
+  return dist(gen);
+}
 
 /**
  * Takes in a file name and returns a set containing all of the applicant names as a set.
@@ -90,8 +114,12 @@ std::queue<const std::string*> find_matches(std::string name, std::set<std::stri
  * @return        Your magical one true love.
  *                Will return "NO MATCHES FOUND." if `matches` is empty.
  */
-std::string get_match(std::queue<const std::string*>& matches) {
-  // STUDENT TODO: Implement this function.
+std::string get_match(std::queue<const std::string*>& matchse) {
+  for(int i = 0; i < matchse.size(); ++i) {
+    if (random_bool(kYourName)) matchse.pop();
+  }
+  if (matchse.size() == 0) return "NO MATCHES FOUND.";
+  return *matchse.front();
 }
 
 /* #### Please don't remove this line! #### */
