@@ -12,7 +12,7 @@ g++ -static-libstdc++ -std=c++20 main.cpp -o main
 ```
 ## Assignment 1
 Type, struct, stream, container, reference`&`
-```
+```c++
 struct Type{...}; Type var{...}; // Uniform initialization
 int a{12.0}; //error
 using String = std::string; 
@@ -23,7 +23,7 @@ void function(const std::vector<int> & vec) // Constant ref, avoid changing the 
 ```
 ## Assignment 2
 Container, iterator, pointer
-```
+```c++
 // To use iterator, the container has to have the iterator method. For example, std::queue does not offer iterator.
 for(auto it = c.begin(); it < c.end(); ++it) { // Always use ++i
   auto& elem = *it; // Dereference, undefined when it == c.end()
@@ -33,7 +33,7 @@ for(auto elem : c) // Commonly
 ```
 ## Assignment 3
 Class(constructor, deconstructor, virtual), inheritance
-```
+```c++
 class Shape {
 public:
   virtual double area() const = 0; // Pure virtual function by adding =0, has to be overriden. (Dynamic Polymorphism) A class with pure virtual functions can not be instantiated.
