@@ -53,4 +53,72 @@ class Student : public virtual Person {...}; // virtual inherit solve the Diamon
 
 ...
 std::vector<Entitiy*> entities { &p, &t, &b }; // Storing pointers instead of the entities themselves. If not using pointers, the derived classes would not fit in the bass class, and get sliced.
+
+// Deconstructor
+IntVector::~IntVector(){
+  delete[] _data;
+}
+
+// Overload operator[], letting IntVector can be used as an normal vector: IntVector[index]
+int& IntVector::operator[](size_t index){
+  return _data[index];
+}
+```
+Template
+```c++
+template <typename T>
+class Vector {
+  T& at(size_t index);
+  ...
+};
+Vector<int> v;
+
+// non-typename template parameters
+template <typename T, int Size>
+class Array {
+private:
+    T data[Size];
+public:
+    T& operator[](int index) { return data[index]; }
+    int size() const { return Size; }
+};
+Array<int, 10> intArray; 
+
+// For template classes the .h file needs to includes the .cpp file at bottom
+```
+Const
+```c++
+// When calling a const obj's method, the declaration and impletation have to be const. Obj marked as const can only make use of the const interface.
+
+template <typename T>
+class Vector {
+public:
+  T& at(size_t index) {
+    return _data[index];
+  }
+  const T& at(size_t index) const {
+    return _data[index]; 
+  }
+private:
+  T* _data;
+};//method at() has two overloads: const version and none const version.
+Vector<int> v;
+v.at(0) = 42; // Correct
+const Vector<int> cv = v;
+cv.at(0) = 100; // Error: const ref cannot be modified
+
+
+template <typename T>
+T& Vector<T>::findElement(const T& value) {...}
+// const_cast<target_type>(expression)
+// Valid uses of const_cast are few and far between
+template <typename T>
+const T& Vector<T>::findElement(const T& value) const {
+  return const_cast<Vector<T>&>(*this).findElement(value); 
+}
+
+// mutable keyword (Carefully!)
+struct MutableStruct { mutable int value; }
+const MutableStruct cm;
+cm.value = 111; // Correct
 ```
