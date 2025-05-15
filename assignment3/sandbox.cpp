@@ -7,5 +7,5 @@
 
 void sandbox() {
   Object obj = Object("TestObj");
-  std::cout << "Name: " << obj.getName() << " Id: " << obj.getId() << "\n";
+  std::cout << "Name: " << obj.getName() << " id: " << obj.getId() << "\n";
 }

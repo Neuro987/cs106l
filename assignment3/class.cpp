@@ -10,7 +10,7 @@ Object::Object()
     position[0] = position[1] = 0;
 }
 Object::Object(const std::string& objName) 
-    : Object()
+    : Object() // 委托函数
 {
     name = objName;
 }
